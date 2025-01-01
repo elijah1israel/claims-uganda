@@ -9,7 +9,6 @@ from FeeNotes.models import FeeNote
 from django.contrib.auth.decorators import login_required
 from Reports.models import Report
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .asgi import app
 from ninja import NinjaAPI
 
 api = NinjaAPI()
