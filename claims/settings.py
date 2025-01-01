@@ -99,7 +99,7 @@ WSGI_APPLICATION = 'claims.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'claimsug_datbase',
+        'NAME': 'claimsug_database',
         'USER': 'claimsug_user',
         'PASSWORD': 'claimsug12@',
         'HOST':'localhost',
