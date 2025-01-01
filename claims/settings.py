@@ -30,6 +30,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['192.168.110.116', 'localhost', '127.0.0.1', '192.168.142.116', 'claimsug.com']
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'mail.claimsug.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'info@claimsug.com'
+EMAIL_HOST_PASSWORD = 'claimsug12@'
+DEFAULT_FROM_EMAIL = 'Claims System <info@claimsug.com>'
 
 # Application definition
 
@@ -104,6 +111,13 @@ DATABASES = {
         'PASSWORD': 'claimsug12@',
         'HOST':'localhost',
         'PORT':'3306',
+    }
+}
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 

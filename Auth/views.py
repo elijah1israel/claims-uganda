@@ -15,6 +15,9 @@ from uuid import uuid4
 from .schema import LoginSchema, ChangePasswordSchema
 from ninja.responses import Response
 from .api import ApiKeyAuth
+from django.core import mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 def login_user(request):
     """
@@ -25,7 +28,7 @@ def login_user(request):
     """
     if request.user.is_authenticated:
         return redirect('dashboard')
-    if request.method == 'POST':
+    if request.method == 'POST':        
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
@@ -71,7 +74,15 @@ def send_registration_link(request):
             registration_link.expires_at = timezone.now() + timedelta(days=1)
             registration_link.save()
             link_url = reverse('register_user', kwargs={'token': registration_link.token})
-            print(link_url)
+            link_url = request.build_absolute_uri(link_url)
+            subject = 'Registration Link'
+            operating_system = request.META.get('HTTP_USER_AGENT')
+            browser_name = request.META.get('HTTP_USER_AGENT')
+            html_message = render_to_string('registration_email.html', {'operating_system': operating_system, 'browser_name': browser_name, 'action_url': link_url})
+            plain_message = strip_tags(html_message)
+            from_email = 'Claims System <info@claimsug.com>'
+            to = registration_link.email
+            mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
             messages.success(request, 'Registration link sent successfully.')
     return redirect('staff')
 
@@ -118,7 +129,15 @@ def password_reset(request):
             reset_password_link = ResetPasswordLink.objects.create(user=user, expires_at=timezone.now() + timedelta(days=1))
             reset_password_link.save()
             link_url = reverse('reset_password', kwargs={'token': str(reset_password_link.token)})
-            print(link_url)
+            link_url = request.build_absolute_uri(link_url)
+            subject = 'Password Reset'
+            operating_system = request.META.get('HTTP_USER_AGENT')
+            browser_name = request.META.get('HTTP_USER_AGENT')
+            html_message = render_to_string('forgot_password_email.html', {'name': user.first_name, 'operating_system': operating_system, 'browser_name': browser_name, 'action_url': link_url})
+            plain_message = strip_tags(html_message)
+            from_email = 'Claims System <info@claimsug.com>'
+            to = user.email
+            mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
             messages.success(request, 'Check your email for reset instructions.')
             return redirect('login')
     return render(request, 'password_reset.html')
