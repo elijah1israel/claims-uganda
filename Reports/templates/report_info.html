@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Report for case {{ report.case.reference_number }}</h4>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Date Uploaded</dt>
+                <dd class="col-sm-9">{{ report.date_uploaded|date:"d-m-Y" }}</dd>
+                <dt class="col-sm-3">Case</dt>
+                <dd class="col-sm-9"><a href="{% url 'case_info' report.case.id %}">{{ report.case }}</a></dd>
+                <dt class="col-sm-3">Report Type</dt>
+                <dd class="col-sm-9">{{ report.report_type }}</dd>
+                <dt class="col-sm-3">File</dt>
+                <dd class="col-sm-9"><a href="{{ report.file.url }}">{{ report.file.name }}</a></dd>
+                <dt class="col-sm-3">Status</dt>
+                <dd class="col-sm-9">{{ report.status }}</dd>
+            </dl>
+        </div>
+        <div class="card-footer">
+            <h5>Submissions and Comments</h5>
+            <ul>
+                {% for submission in report.submissions.all %}
+                <li>{{ submission.date }}<br>
+                    {% for comment in submission.comments.all %}
+                    {{ comment.text }} <span>- <b>{{ comment.author.user.get_full_name }}</b> ({{comment.author.department}})</span><br>
+                    {% endfor %}
+                </li>
+                {% empty %}
+                <li>No submissions</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% if report.status != 'Submitted' %}
+        <div class="card-footer">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#submitReportModal">Submit Report</button>
+            <div class="modal fade" id="submitReportModal" tabindex="-1" aria-labelledby="submitReportModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="submitReportModalLabel">Submit Report</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{% url 'submit_report' report.id %}" method="post">
+                                {% csrf_token %}
+                                <div class="mb-3 form-group">
+                                    <label for="comment" class="form-label">Comment</label>
+                                    <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="card-footer">
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#replyReportModal">Review</button>
+            <div class="modal fade" id="replyReportModal" tabindex="-1" aria-labelledby="replyReportModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="replyReportModalLabel">Reply to Report</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="" method="post">
+                                {% csrf_token %}
+                                <div class="mb-3 form-group">
+                                    <label for="comment" class="form-label">Comment</label>
+                                    <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Reply</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#closeReportModal">Close Report</button>
+            <div class="modal fade" id="closeReportModal" tabindex="-1" aria-labelledby="closeReportModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="closeReportModalLabel">Close Report</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="" method="post">
+                                {% csrf_token %}
+                                <div class="mb-3 form-group">
+                                    <label for="comment" class="form-label">Comment</label>
+                                    <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
+                                </div>
+                                <div class="modal-footer">                                    
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Close</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+{% endblock %}

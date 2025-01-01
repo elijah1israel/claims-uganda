@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="col-md-12">
+  <div class="card">
+    <div class="card-header">
+      <div class="d-flex align-items-center">
+        <h4 class="card-title">Company Staff</h4>
+        <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal" data-bs-target="#newCaseModal">
+          <i class="fa fa-user-plus"></i>
+          Register
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+      <!-- Modal -->
+      <div class="modal fade" id="newCaseModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Register New Staff</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form method="post" action="{% url 'send_registration_link' %}">
+                {% csrf_token %}
+                {{form}}
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Close
+                  </button>
+                  <button type="submit" class="btn btn-primary">
+                    Send Link
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table id="add-row" class="display table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Department</th>
+              <th>Date Joined</th>
+              <th>Status</th>
+              <th style="width: 10%">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for staff in staff %}
+            <tr data-bs-toggle="tooltip" >
+              <td>{{staff.user.first_name}}</td>
+              <td>{{staff.user.last_name}}</td>
+              <td title="{{case.get_policy_display}}">{{staff.department}}</td>
+              <td>{{staff.user.date_joined}}</td>
+              <td>{{staff.status}}</td>
+              <td>
+                <div class="form-button-action">
+                  {% if staff.status == 'Active' %}
+                  <a href="{% url 'make_staff_inactive' staff.id %}" style="font-size: 1.5rem" title="Make inactive" type="button" class="btn btn-link btn-success"
+                    data-bs-toggle="tooltip">
+                    <i class="fa fa-toggle-on"></i>
+                </a>
+                  {% else %}
+                  <a href="{% url 'make_staff_active' staff.id %}" style="font-size: 1.5rem" title="Make active" type="button" class="btn btn-link btn-danger"
+                    data-bs-toggle="tooltip">
+                    <i class="fa fa-toggle-off"></i>
+              </a>
+                  {% endif %}
+
+                  <a href="{% url 'staff_profile' staff.id %}">
+                    <button title="More information" data-bs-toggle="tooltip" type="button" class="btn btn-link btn-info"
+                      data-bs-toggle="modal" data-bs-target="#detailsCaseModal" data-case-id="{{case.id}}">
+                      <i class="fa fa-info"></i>
+                    </button>
+                  </a>
+
+
+                  <!-- Modal -->
+                  <div class="modal fade" id="deleteCaseModal" tabindex="-1" role="dialog"
+                    aria-labelledby="deleteCaseModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="deleteCaseModalLabel">
+                            Delete Case
+                          </h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          Are you sure you want to delete this case?
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Cancel
+                          </button>
+                          <a href="" class="btn btn-danger">
+                            Delete
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="6">
+                <i class="fas fa-empty"></i>
+                No staff Registered
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <nav class="mt-3" aria-label="...">
+        <ul class="pagination justify-content-center">
+          {% if staff.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ staff.previous_page_number }}">Previous</a>
+          </li>
+          {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1">Previous</a>
+          </li>
+          {% endif %}
+          {% for page in staff.paginator.page_range %}
+          <li class="page-item {% if page == staff.number %}active{% endif %}">
+            <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+          </li>
+          {% endfor %}
+          {% if staff.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ staff.next_page_number }}">Next</a>
+          </li>
+          {% else %}
+          <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1">Next</a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+{% endblock %}

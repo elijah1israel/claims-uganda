@@ -1,0 +1,44 @@
+{% extends 'auth_base.html' %}
+
+{%  block content %}
+
+    <div class="card col-lg-4 mx-auto">
+      <div class="card-body px-5 py-5">
+        <div class="text-center">
+          <h3 class="card-title mb-3">Claims Management</h3>
+        </div>
+        <h4 class="card-title text-left mb-3">Login</h4>
+        <form action="" method="post">
+          {% if messages %}
+          <div class="text-center bg-danger">
+            {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">
+              {{ message }}
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+          {% csrf_token %}
+          <div class="form-group">
+            <label>Staff Email *</label>
+            <input required type="email" name="username" class="form-control p_input">
+          </div>
+          <div class="form-group">
+            <label>Password *</label>
+            <input required type="password" name="password" class="form-control p_input">
+          </div>
+          <div class="form-group d-flex align-items-center justify-content-between">
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="checkbox" class="form-check-input"> Remember me </label>
+            </div>
+            <a href="{% url 'reset_password' %}" class="forgot-pass">Forgot password</a>
+          </div>
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary btn-block enter-btn">Login</button>
+          </div>
+          <p class="sign-up">Don't have an Account? Reach out to Administrator</p>
+        </form>
+      </div>
+    </div>
+{% endblock %}

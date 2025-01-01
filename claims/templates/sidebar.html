@@ -1,0 +1,106 @@
+<!-- Sidebar -->
+<div class="sidebar" data-background-color="dark">
+    <div class="sidebar-logo">
+      <!-- Logo Header -->
+      <div class="logo-header" data-background-color="dark">
+        <a style="color: white;" href="index.html" class="logo">
+          Claims
+        </a>
+        <div class="nav-toggle">
+          <button class="btn btn-toggle toggle-sidebar">
+            <i class="gg-menu-right"></i>
+          </button>
+          <button class="btn btn-toggle sidenav-toggler">
+            <i class="gg-menu-left"></i>
+          </button>
+        </div>
+        <button class="topbar-toggler more">
+          <i class="gg-more-vertical-alt"></i>
+        </button>
+      </div>
+      <!-- End Logo Header -->
+    </div>
+    <div class="sidebar-wrapper scrollbar scrollbar-inner">
+      <div class="sidebar-content">
+        <ul class="nav nav-secondary">
+          <li class="nav-item {% if 'dashboard' in request.path %}active{% endif %}">
+            <a
+              href="{% url 'dashboard' %}"
+              class="collapsed"
+              aria-expanded="false"
+            >
+              <i class="fas fa-home"></i>
+              <p>Dashboard</p>
+            </a>
+          </li>
+          <li class="nav-section">
+            <span class="sidebar-mini-icon">
+              <i class="fa fa-ellipsis-h"></i>
+            </span>
+            <h4 class="text-section">SECTIONS</h4>
+          </li>
+          <li class="nav-item {% if 'cases' in request.path %}active{% endif %}">
+            <a href="{% url 'cases' %}">
+              <i class="fas fa-briefcase"></i>
+              <p>Cases</p>
+              <span class="badge badge-danger">{{user.staff.assessor.cases.count}}</span>
+            </a>
+          </li>
+          <li class="nav-item {% if 'fee-notes' in request.path %}active{% endif %}">
+            <a href="{% url 'fee-notes' %}">
+              <i class="fas fa-receipt"></i>
+              <p>Fee Notes</p>
+            </a>
+          </li>
+          {% if user.staff.department == 'Administration' or user.staff.department == 'Assessors' %}
+          <li class="nav-item {% if 'reports' in request.path %}active{% endif %}">
+            <a href="{% url 'reports' %}">
+              <i class="fas fa-file-alt"></i>
+              <p>Reports</p>
+            </a>
+          </li>
+          {% endif %}
+          {% if user.staff.department == 'Administration' or user.staff.department == 'Assessors' %}
+          <li class="nav-item {% if 'templates' in request.path %}active{% endif %}">
+            <a href="{% url 'templates' %}">
+              <i class="fas fa-pen"></i>
+              <p>Templates</p>
+            </a>
+          </li>
+          {% endif %}
+          {% if user.staff.department == 'Administration' or user.staff.department == 'Assessors' %}
+          <li class="nav-item {% if 'appointments' in request.path %}active{% endif %}">
+            <a href="{% url 'appointments' %}">
+              <i class="fas fa-calendar"></i>
+              <p>Appointments</p>
+              <span class="badge badge-danger">{{user.staff.appointments.count}}</span>
+            </a>
+          </li>
+          {% endif %}
+          {% if user.staff.department == 'Administration' %}
+          <li class="nav-item {% if 'staff' in request.path %}active{% endif %}">
+            <a href="{% url 'staff' %}">
+              <i class="fas fa-users"></i>
+              <p>Staff</p>
+            </a>
+          </li>
+          {% endif %}
+          {% if user.staff.department == 'Administration' or user.staff.department == 'Finance' %}
+          <li class="nav-item {% if 'reminders' in request.path %}active{% endif %}">
+            <a href="{% url 'reminders' %}">
+              <i class="fas fa-bell"></i>
+              <p>Reminders</p>
+            </a>
+          </li>
+          {% endif %}
+          <li class="nav-item">
+            <a href="">
+              <i class="fas fa-file"></i>
+              <p>Documentation</p>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- End Sidebar -->
