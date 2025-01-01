@@ -11,7 +11,7 @@ from Reports.models import Report
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from ninja import NinjaAPI
 
-api = NinjaAPI()
+api = NinjaAPI(title="Claims Api Documentation")
 
 @login_required
 def dashboard(request):
