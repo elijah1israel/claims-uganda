@@ -16,7 +16,7 @@ fastapi
 Flask
 Jinja2
 MarkupSafe
-mysqlclient
+PyMySQL
 nest-asyncio
 pillow
 plotly
