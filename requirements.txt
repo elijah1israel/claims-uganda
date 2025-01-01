@@ -1,5 +1,5 @@
-Django
+django
 django-ninja
-PyMySQL
+pymysql
 pillow
 plotly
