@@ -102,7 +102,7 @@ DATABASES = {
         'NAME': 'claimsug_datbase',
         'USER': 'claimsug_user',
         'PASSWORD': 'claimsug12@',
-        'HOST':'claimsug.com',
+        'HOST':'localhost',
         'PORT':'3306',
     }
 }
