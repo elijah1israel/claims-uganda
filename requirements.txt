@@ -32,5 +32,3 @@ starlette
 tenacity
 typing_extensions
 tzdata
-urllib
-zipp
