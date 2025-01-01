@@ -13,7 +13,7 @@ dash-table
 Django
 django-ninja
 fastapi
-Flask#
+Flask
 Jinja2
 MarkupSafe
 mysqlclient
