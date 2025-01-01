@@ -18,8 +18,8 @@ Jinja2
 MarkupSafe
 mysqlclient
 nest-asyncio
-packagingpillow
-plotly1
+pillow
+plotly
 pydantic
 pydantic_core
 requests
@@ -32,7 +32,5 @@ starlette
 tenacity
 typing_extensions
 tzdata
-urllib3
-uvicorn
-Werkzeug
+urllib
 zipp
