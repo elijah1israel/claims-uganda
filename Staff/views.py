@@ -57,7 +57,7 @@ def change_department(request, staff_id):
     staff = Staff.objects.get(pk=staff_id)
     staff.department = request.POST['department']
     staff.save()
-    messages.success(request, f'{staff.user.first_name} has been successfully added to the {request.POST['department']} Department.')
+    messages.success(request, f"{staff.user.first_name} has been successfully added to the {request.POST['department']} Department.")
     return redirect('staff_profile', pk=staff_id)
 
 
