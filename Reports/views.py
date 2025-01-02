@@ -6,6 +6,10 @@ from .models import Report
 from django.http import HttpResponse
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from Staff.models import Staff
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.core import mail
 
 
 @login_required
@@ -27,6 +31,7 @@ def upload_report(request, case_id):
 
 @login_required
 def reports(request):
+    staff = Staff.objects.all()
     if request.user.staff.department == 'Assessors':
         reports = request.user.staff.assessor.reports.all()
     else:
@@ -39,7 +44,7 @@ def reports(request):
         reports = paginator.page(1)
     except EmptyPage:
         reports = paginator.page(paginator.num_pages)
-    return render(request, 'reports.html', {'reports': reports})
+    return render(request, 'reports.html', {'reports': reports, 'form': ReportForm(), 'staffs': staff})
 
 
 @login_required
@@ -90,3 +95,20 @@ def submit_report(request, report_id):
         messages.success(request, 'Report submitted successfully.')
         return redirect('report_info', report_id=report_id)
 
+
+def share_report(request, report_id):
+    if request.method == 'POST':
+        staff_id = request.POST.get('staff')
+        staff = Staff.objects.get(id=staff_id)
+        report = Report.objects.get(id=report_id)
+        link_url = request.build_absolute_uri(report.file.url)
+        subject = f'Report for case {report.case.reference_number} Shared.'
+        operating_system = request.META.get('HTTP_USER_AGENT')
+        browser_name = request.META.get('HTTP_USER_AGENT')
+        html_message = render_to_string('report_share_email.html', {'operating_system': operating_system, 'browser_name': browser_name, 'action_url': link_url, 'name': staff.user.first_name, 'sender': request.user.staff.user.first_name})
+        plain_message = strip_tags(html_message)
+        from_email = 'Claims System <info@claimsug.com>'
+        to = staff.user.email
+        mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
+        messages.success(request, 'Report shared successfully.')
+        return redirect('reports')

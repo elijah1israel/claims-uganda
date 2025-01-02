@@ -8,4 +8,5 @@ urlpatterns = [
     path('delete/<int:report_id>/', views.delete_report, name='delete_report'),
     path('info/<int:report_id>/', views.report_info, name='report_info'),
     path('submit/<int:report_id>/', views.submit_report, name='submit_report'),
+    path('share/<int:report_id>/', views.share_report, name='share_report'),
 ]

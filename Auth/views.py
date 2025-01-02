@@ -46,6 +46,8 @@ def login_user(request):
         else:
             messages.error(request, 'Invalid username or password.')
             return redirect('.')
+    if 'next' in request.GET:  # 'next' parameter indicates redirection
+        messages.info(request, "Your session has expired. Please log in again.")
     return render(request, 'login.html')
 
 

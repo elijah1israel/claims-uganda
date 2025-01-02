@@ -5,6 +5,9 @@ from Auth.forms import RegistrationLinkForm
 from .models import departments
 from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core import mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 
 @login_required
 def staff(request):
@@ -57,6 +60,14 @@ def change_department(request, staff_id):
     staff = Staff.objects.get(pk=staff_id)
     staff.department = request.POST['department']
     staff.save()
+    subject = 'New Department!'
+    operating_system = request.META.get('HTTP_USER_AGENT')
+    browser_name = request.META.get('HTTP_USER_AGENT')
+    html_message = render_to_string('department_email.html', {'operating_system': operating_system, 'browser_name': browser_name, 'name': staff.user.first_name, 'sender': request.user.staff.user.first_name, 'department': request.POST['department']})
+    plain_message = strip_tags(html_message)
+    from_email = 'Claims System <info@claimsug.com>'
+    to = staff.user.email
+    mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
     messages.success(request, f"{staff.user.first_name} has been successfully added to the {request.POST['department']} Department.")
     return redirect('staff_profile', pk=staff_id)
 
