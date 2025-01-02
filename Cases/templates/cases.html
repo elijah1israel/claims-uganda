@@ -66,12 +66,12 @@
                 <div class="form-button-action">
                   {% if user.staff.department == 'Administration' %}
                   <button type="button" class="btn btn-link btn-primary btn-lg" data-bs-toggle="modal"
-                    data-bs-target="#editCaseModal{{case.id}}" data-case-id="{{case.id}}" title="Edit Case">
+                    data-bs-target="#editCaseModal{{case.id}}" title="Edit Case">
                     <i class="fa fa-edit"></i>
                   </button>
                   {% endif %}
                   <!-- Edit Case Modal -->
-                  <div class="modal fade" id="editCaseModal{{case.id}}" tabindex="-1" role="dialog" aria-hidden="true">
+                  <div class="modal fade" id="editCaseModal{{case.id}}" aria-labelledby="editCaseModalLabel{{case.id}}" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
