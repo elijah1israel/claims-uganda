@@ -6,7 +6,7 @@ from django.forms import widgets
 class CaseForm(ModelForm):
     class Meta:
         model = Case
-        exclude = ('comment', 'pictures', 'paid', 'fee_note', 'reference_number', 'reports', 'status', 'support_documents')
+        exclude = ('comment', 'pictures', 'paid', 'fee_note', 'reference_number', 'reports', 'status', 'support_documents', 'field_notes')
         widgets = {
             'date_reported': widgets.DateInput(attrs={'class': 'form-control mb-3', 'type': 'date'}),
             'insurance_Company': widgets.Select(attrs={'class': 'form-control mb-3'}),
