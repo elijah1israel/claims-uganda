@@ -79,6 +79,10 @@
                                                                 <option value="{{staff.id}}">{{staff.user.first_name}} {{staff.user.last_name}}</option>
                                                                 {% endfor %}
                                                             </select>
+                                                            <div class="form-group">
+                                                                <label for="message">Message</label>
+                                                                <textarea required class="form-control" id="message" name="message" rows="3"></textarea>
+                                                            </div>
                                                         </div>
                                                         <button type="submit" class="btn btn-primary">Share</button>
                                                     </form>

@@ -8,7 +8,7 @@ class CaseForm(ModelForm):
         model = Case
         exclude = ('comment', 'pictures', 'paid', 'fee_note', 'reference_number', 'reports', 'status', 'support_documents')
         widgets = {
-            'date_reported': widgets.SelectDateWidget(years=range(2000, 2025), attrs={'class': 'form-control mb-3'}),
+            'date_reported': widgets.DateInput(attrs={'class': 'form-control mb-3', 'type': 'date'}),
             'insurance_Company': widgets.Select(attrs={'class': 'form-control mb-3'}),
             'company_email': widgets.EmailInput(attrs={'class': 'form-control mb-3'}),
             'policy': widgets.Select(attrs={'class': 'form-control mb-3'}),

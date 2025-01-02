@@ -10,6 +10,7 @@ report_types = (
 statuses = (
     ('In Progress', 'In Progress'),
     ('Submitted', 'Submitted'),
+    ('Approved', 'Approved')
 )
                
 class  Report(models.Model):

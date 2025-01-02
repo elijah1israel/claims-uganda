@@ -457,27 +457,12 @@
                     <td class="content-cell">
                       <div class="f-fallback">
                         <h1>Hi {{name}},</h1>
-                        <p>{{sender}} shared with you a report. <strong>Use the button below to download it.</strong></p>
+                        <p>{{sender}} reviewed your {{report.report_type}} Report. <strong>Case {{report.case.reference_number}}.</strong></p>
                         <hr>
                         <p>Message: {{message|linebreaks}}</p>
-                        <p>Report Type: {{report.report_type}}</p>
-                        <p>Case: {{report.case.reference_number}}</p>
-                        <!-- Action -->
-                        <div style="text-align: center;">
-                            <a href="{{action_url}}" class="f-fallback button" style="background-color: green; border-radius: 3px; font-size: 15px; font-family: Arial, sans-serif; text-align: center; display: inline-block; padding: 10px 25px; color: #ffffff; text-decoration: none; border: 1px solid #3869D4; cursor: pointer;" target="_blank">Download Report</a>
-                        </div>
                         <p><a href="https://wa.me/+256789592019">contact support</a> if you have questions.</p>
                         <p>Thanks,
                           <br>The Claims Management team</p>
-                        <!-- Sub copy -->
-                        <table class="body-sub" role="presentation">
-                          <tr>
-                            <td>
-                              <p class="f-fallback sub">If you’re having trouble with the button above, copy and paste the URL below into your web browser.</p>
-                              <p class="f-fallback sub">{{action_url}}</p>
-                            </td>
-                          </tr>
-                        </table>
                       </div>
                     </td>
                   </tr>

@@ -15,6 +15,7 @@ statuses = (
 
 class Staff(models.Model):
     user = models.OneToOneField(User, models.CASCADE)
+    date_of_birth = models.DateField(null=True)
     api_key = models.UUIDField(null=True)
     profile_picture = models.ImageField(upload_to='Staff/profile_pictures/', null=True, blank=True)
     department = models.CharField(max_length=100, choices=departments)

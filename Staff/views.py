@@ -8,6 +8,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core import mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from Assessors.models import Assessor
 
 @login_required
 def staff(request):
@@ -60,6 +61,12 @@ def change_department(request, staff_id):
     staff = Staff.objects.get(pk=staff_id)
     staff.department = request.POST['department']
     staff.save()
+    if request.POST['department'] == 'Assessors':
+        try:
+            assessor = Assessor.objects.get(staff=staff)
+        except Assessor.DoesNotExist:
+            assessor = Assessor.objects.create(staff=staff)
+            assessor.save()
     subject = 'New Department!'
     operating_system = request.META.get('HTTP_USER_AGENT')
     browser_name = request.META.get('HTTP_USER_AGENT')

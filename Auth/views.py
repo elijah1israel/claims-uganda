@@ -19,6 +19,7 @@ from django.core import mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
+
 def login_user(request):
     """
     View to handle login of users. If the user is authenticated, redirects to the dashboard. If the user is not authenticated and the request is a POST, attempts to authenticate the user. If the user is authenticated and active, logs the user in and redirects to the dashboard. If the user is authenticated but inactive, shows an error message. If the user is not authenticated, shows an error message.

@@ -99,16 +99,69 @@ def submit_report(request, report_id):
 def share_report(request, report_id):
     if request.method == 'POST':
         staff_id = request.POST.get('staff')
+        message = request.POST.get('message')
         staff = Staff.objects.get(id=staff_id)
         report = Report.objects.get(id=report_id)
         link_url = request.build_absolute_uri(report.file.url)
         subject = f'Report for case {report.case.reference_number} Shared.'
         operating_system = request.META.get('HTTP_USER_AGENT')
         browser_name = request.META.get('HTTP_USER_AGENT')
-        html_message = render_to_string('report_share_email.html', {'operating_system': operating_system, 'browser_name': browser_name, 'action_url': link_url, 'name': staff.user.first_name, 'sender': request.user.staff.user.first_name})
+        html_message = render_to_string('report_share_email.html', {'operating_system': operating_system, 'browser_name': browser_name, 'action_url': link_url, 'name': staff.user.first_name, 'sender': request.user.staff.user.first_name, 'message': message, 'report': report})
         plain_message = strip_tags(html_message)
         from_email = 'Claims System <info@claimsug.com>'
         to = staff.user.email
         mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
         messages.success(request, 'Report shared successfully.')
         return redirect('reports')
+
+
+def update_report(request, report_id):
+    report = Report.objects.get(id=report_id)
+    if request.method == 'POST':
+        file = request.FILES.get('file')
+        message = request.POST['message']
+        report.file = file
+        report.save()
+        subject = f'Report for case {report.case.reference_number} Updated.'
+        operating_system = request.META.get('HTTP_USER_AGENT')
+        browser_name = request.META.get('HTTP_USER_AGENT')
+        html_message = render_to_string('report_update_email.html', {'operating_system': operating_system, 'browser_name': browser_name, 'name': report.case.assessor.staff.user.first_name, 'sender': request.user.staff.user.first_name, 'message': message, 'report': report})
+        plain_message = strip_tags(html_message)
+        from_email = 'Claims System <info@claimsug.com>'
+        to = report.case.assessor.staff.user.email
+        mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
+        messages.success(request, 'Report updated successfully.')
+        return redirect('report_info', report_id=report_id)
+
+
+
+def review_report(request, report_id):
+    report = Report.objects.get(id=report_id)
+    if request.method == 'POST':
+        message = request.POST['message']
+        subject = f'Report for case {report.case.reference_number} Reviewed.'
+        operating_system = request.META.get('HTTP_USER_AGENT')
+        browser_name = request.META.get('HTTP_USER_AGENT')
+        html_message = render_to_string('report_review_email.html', {'operating_system': operating_system, 'browser_name': browser_name, 'name': report.case.assessor.staff.user.first_name, 'sender': request.user.staff.user.first_name, 'message': message, 'report': report})
+        plain_message = strip_tags(html_message)
+        from_email = 'Claims System <info@claimsug.com>'
+        to = report.case.assessor.staff.user.email
+        mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
+        messages.success(request, 'Report reviewed successfully.')
+        return redirect('report_info', report_id=report_id)
+
+
+def approve_report(request, report_id):
+    report = Report.objects.get(id=report_id)
+    report.status = 'Approved'
+    report.save()
+    subject = f'Report for case {report.case.reference_number} Approved.'
+    operating_system = request.META.get('HTTP_USER_AGENT')
+    browser_name = request.META.get('HTTP_USER_AGENT')
+    html_message = render_to_string('report_approved_email.html', {'operating_system': operating_system, 'browser_name': browser_name, 'name': report.case.assessor.staff.user.first_name, 'sender': request.user.staff.user.first_name, 'report': report})
+    plain_message = strip_tags(html_message)
+    from_email = 'Claims System <info@claimsug.com>'
+    to = report.case.assessor.staff.user.email
+    mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
+    messages.success(request, 'Report approved successfully.')
+    return redirect('report_info', report_id=report_id)

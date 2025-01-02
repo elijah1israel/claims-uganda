@@ -187,6 +187,7 @@
                                         <i class="fa fa-download"></i>
                                     </a>
                                     {% if user.staff.department != 'Finance' %}
+                                    {% if report.status != 'Approved' %}
                                     <a href="" data-bs-toggle="modal" data-bs-target="#deleteReportModal{{report.id}}"
                                         class="btn btn-link btn-danger">
                                         <i class="fa fa-times"></i>
@@ -214,9 +215,43 @@
                                             </div>
                                         </div>
                                     </div>
+                                    {% endif %}
                                     <a href="{% url 'report_info' report.id %}" data-bs-toggle="tooltip" title="Info" class="btn btn-link btn-success">
                                         <i class="fa fa-info"></i>
                                     </a>
+                                    {% endif %}
+                                    {% if user.staff.department == 'Assessors' and user.staff.assessor == report.case.assessor %}
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#shareReportModal{{report.id}}" class="btn btn-link btn-info">
+                                        <i class="fa fa-share-alt"></i>
+                                    </a>
+                                    <div class="modal fade" id="shareReportModal{{report.id}}" tabindex="-1" role="dialog" aria-labelledby="shareReportModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="shareReportModalLabel">Share Report</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="{% url 'share_report' report.id %}" method="post">
+                                                        {% csrf_token %}
+                                                        <div class="mb-3">
+                                                            <label for="email" class="form-label">Email address</label>
+                                                            <select required name="staff" id="staff" class="form-select">
+                                                                {% for staff in staffs %}
+                                                                <option value="{{staff.id}}">{{staff.user.first_name}} {{staff.user.last_name}}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                            <div class="form-group">
+                                                                <label for="message">Message</label>
+                                                                <textarea required class="form-control" id="message" name="message" rows="3"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <button type="submit" class="btn btn-primary">Share</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     {% endif %}
                                 </td>
                             </tr>

@@ -63,16 +63,56 @@
               <td>
                 <div class="form-button-action">
                   {% if staff.status == 'Active' %}
-                  <a href="{% url 'make_staff_inactive' staff.id %}" style="font-size: 1.5rem" title="Make inactive" type="button" class="btn btn-link btn-success"
-                    data-bs-toggle="tooltip">
+                  <button style="font-size: 1.5rem" title="Make inactive" type="button" class="btn btn-link btn-success" data-bs-toggle="modal" data-bs-target="#makeInactiveModal{{staff.id}}">
                     <i class="fa fa-toggle-on"></i>
-                </a>
+                  </button>
                   {% else %}
-                  <a href="{% url 'make_staff_active' staff.id %}" style="font-size: 1.5rem" title="Make active" type="button" class="btn btn-link btn-danger"
-                    data-bs-toggle="tooltip">
+                  <button style="font-size: 1.5rem" title="Make active" type="button" class="btn btn-link btn-danger" data-bs-toggle="modal" data-bs-target="#makeActiveModal{{staff.id}}">
                     <i class="fa fa-toggle-off"></i>
-              </a>
+                  </button>
                   {% endif %}
+
+                  <!-- Make Inactive Modal -->
+                  <div class="modal fade" id="makeInactiveModal{{staff.id}}" tabindex="-1" role="dialog" aria-labelledby="makeInactiveModalLabel{{staff.id}}" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="makeInactiveModalLabel{{staff.id}}">Make Inactive</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          Are you sure you want to make {{staff.user.first_name}} {{staff.user.last_name}} inactive?
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                          <a href="{% url 'make_staff_inactive' staff.id %}" class="btn btn-danger">Make Inactive</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Make Active Modal -->
+                  <div class="modal fade" id="makeActiveModal{{staff.id}}" tabindex="-1" role="dialog" aria-labelledby="makeActiveModalLabel{{staff.id}}" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="makeActiveModalLabel{{staff.id}}">Make Active</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          Are you sure you want to make {{staff.user.first_name}} {{staff.user.last_name}} active?
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                          <a href="{% url 'make_staff_active' staff.id %}" class="btn btn-success">Make Active</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
                   <a href="{% url 'staff_profile' staff.id %}">
                     <button title="More information" data-bs-toggle="tooltip" type="button" class="btn btn-link btn-info"

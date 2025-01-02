@@ -6,7 +6,7 @@
     <div class="card-header">
       <div class="d-flex align-items-center">
         <h4 class="card-title" >Cases Reported</h4>
-        {% if user.staff.department == 'Administration' %}
+        {% if user.staff.department == 'Administration' or user.staff.department == 'Assessors' %}
         <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal" data-bs-target="#newCaseModal">
           <i class="fa fa-plus"></i>
           New Case

@@ -10,9 +10,17 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from claims.views import api
 from Auth.api import ApiKeyAuth
+from django.core import mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from Staff.models import Staff
 
 @login_required
 def cases(request):
+    form = CaseForm()
+    if request.user.staff.department == 'Assessors':
+        form = CaseForm(initial={'assessor': request.user.staff.assessor})
+        form.fields['assessor'].widget.attrs['readonly'] = True
     if request.user.staff.department == 'Assessors':
         cases = request.user.staff.assessor.cases.all()
     else:
@@ -27,7 +35,7 @@ def cases(request):
         page_obj = paginator.page(paginator.num_pages)
     context = {
         'page_obj': page_obj,
-        'form': CaseForm()
+        'form': form
     }
     return render(request, 'cases.html', context)
 
@@ -45,16 +53,27 @@ def comment_case(request, case_id):
 def new_case(request):
     if request.method == 'POST':
         form = CaseForm(request.POST)
+        if request.user.staff.department == 'Assessors':
+            form = CaseForm(initial={'assessor': request.user.staff.assessor}, data=request.POST)
         if form.is_valid():
             case = form.save()
             case.reference_number = f'{case.insurance_Company}/{case.policy}/{case.id}/{case.date_reported.year}'
             case.save()
             assessor = form.cleaned_data['assessor']
             assessor.cases.add(form.instance)
+            subject = 'New Case Assigned!'
+            operating_system = request.META.get('HTTP_USER_AGENT')
+            browser_name = request.META.get('HTTP_USER_AGENT')
+            html_message = render_to_string('new_case_email.html', {'operating_system': operating_system, 'browser_name': browser_name, 'name': assessor.staff.user.first_name, 'sender': request.user.staff.user.first_name, 'case': case})
+            plain_message = strip_tags(html_message)
+            from_email = 'Claims System <info@claimsug.com>'
+            to = assessor.staff.user.email
+            mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
             messages.success(request, 'Case created successfully.')
             return redirect('cases')
     else:
         form = CaseForm()
+    print(form.errors)
     return render(request, 'new_case.html', {'form': form})
 
 @login_required
@@ -72,7 +91,8 @@ def edit_case(request, case_id):
 @login_required
 def case_info(request, case_id):
     case = Case.objects.get(id=case_id)
-    return render(request, 'case_info.html', {'case': case, 'report_form': ReportForm(), 'support_document_form': SupportDocumentForm()})
+    staff = Staff.objects.all()
+    return render(request, 'case_info.html', {'case': case, 'report_form': ReportForm(), 'support_document_form': SupportDocumentForm(), 'staffs': staff})
 
 @login_required
 def zip_case_files(request, case_id):
