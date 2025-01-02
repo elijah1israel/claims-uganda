@@ -46,6 +46,7 @@
             <tr>
               <th>Date</th>
               <th>Case</th>
+              <th>Currency</th>
               <th>V.A.T</th>
               <th>Total</th>
               <th>Status</th>
@@ -57,6 +58,7 @@
             <tr data-bs-toggle="tooltip">
               <td>{{note.case.date_reported}}</td>
               <td>{{note.case}}</td>
+              <td>{{note.currency}}</td>
               <td title="{{case.get_policy_display}}">{{note.value_added_tax}}</td>
               <td>{{note.total}}</td>
               <td>{{note.status}}</td>
@@ -126,7 +128,7 @@
             </tr>
             {% empty %}
             <tr>
-              <td colspan="6">
+              <td colspan="7">
                 <i class="fas fa-empty"></i>
                 No Fee Notes Registered
               </td>

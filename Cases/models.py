@@ -47,6 +47,7 @@ class Case(models.Model):
     assessor = models.ForeignKey('Assessors.Assessor', on_delete=models.SET_NULL, null=True, related_name='_case_assessor')
     fee_note = models.OneToOneField('FeeNotes.FeeNote', on_delete=models.SET_NULL, null=True, related_name='case_feenote')
     support_documents = models.ManyToManyField('SupportDocuments.SupportDocument', blank=True, related_name='case_support_documents')
+    field_notes = models.FileField(upload_to='CaseFieldNotes/files', null=True)
     paid = models.BooleanField(default=False)
 
     def __str__(self):

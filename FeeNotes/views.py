@@ -51,11 +51,14 @@ def add_fee_note(request):
 def upload_fee_note(request, fee_note_id):
     fee_note = FeeNote.objects.get(id=fee_note_id)
     if request.method == 'POST':
-        form = FeeNoteForm(request.POST, instance=fee_note)
-        if form.is_valid():
-            file = request.FILES['file']
-            fee_note.valid_fee_note = file
-            fee_note.save()
+        file = request.FILES['file']
+        fee_note.valid_fee_note = file
+        fee_note.save()
+        messages.success(request, 'Fee note uploaded successfully.')
+        return redirect(request.META.get('HTTP_REFERER', 'fee-notes'))
+    else:
+        form = FeeNoteForm(instance=fee_note)
+        return render(request, 'fee_notes.html', {'form': form})
             
 
 

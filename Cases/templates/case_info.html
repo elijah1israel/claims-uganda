@@ -35,6 +35,9 @@
                     <dd class="col-sm-8">{{case.reference_number}}</dd>
                     <dt class="col-sm-4">Assessor</dt>
                     <dd class="col-sm-8">{{case.assessor}}</dd>
+                    <dt class="col-sm-4">Field Notes</dt>
+                    <dd class="col-sm-8">{{case.assessor}}</dd>
+                    
                 </dl>
             </div>
         </div>
@@ -72,19 +75,19 @@
                     <dt class="col-sm-4">Case</dt>
                     <dd class="col-sm-8">{{case.fee_note.case}}</dd>
                     <dt class="col-sm-4">Inspection and Assessment Fee</dt>
-                    <dd class="col-sm-8">{{case.fee_note.inspection_and_assessment_fee}}</dd>
+                    <dd class="col-sm-8">{{case.fee_note.inspection_and_assessment_fee}} {{case.fee_note.currency}}</dd>
                     <dt class="col-sm-4">Accommodation Fee</dt>
-                    <dd class="col-sm-8">{{case.fee_note.accommodation_fee}}</dd>
+                    <dd class="col-sm-8">{{case.fee_note.accommodation_fee}} {{case.fee_note.currency}}</dd>
                     <dt class="col-sm-4">Out of Office Allowance</dt>
-                    <dd class="col-sm-8">{{case.fee_note.out_of_office_allowance}}</dd>
+                    <dd class="col-sm-8">{{case.fee_note.out_of_office_allowance}} {{case.fee_note.currency}}</dd>
                     <dt class="col-sm-4">Travel and Assessment Fee</dt>
-                    <dd class="col-sm-8">{{case.fee_note.travel_and_assessment_fee}}</dd>
+                    <dd class="col-sm-8">{{case.fee_note.travel_and_assessment_fee}} {{case.fee_note.currency}}</dd>
                     <dt class="col-sm-4">Photos</dt>
-                    <dd class="col-sm-8">{{case.fee_note.photos}}</dd>
+                    <dd class="col-sm-8">{{case.fee_note.photos}} {{case.fee_note.currency}}</dd>
                     <dt class="col-sm-4">Value Added Tax (VAT)</dt>
-                    <dd class="col-sm-8">{{case.fee_note.value_added_tax}}</dd>
+                    <dd class="col-sm-8">{{case.fee_note.value_added_tax}} {{case.fee_note.currency}}</dd>
                     <dt class="col-sm-4">Total</dt>
-                    <dd class="col-sm-8">{{case.fee_note.total}}</dd>
+                    <dd class="col-sm-8">{{case.fee_note.total}} {{case.fee_note.currency}}</dd>
                     <dt class="col-sm-4">Uploaded Fee Note</dt>
                     <dd class="col-sm-8">
                         {% if case.fee_note.valid_fee_note %}
@@ -115,11 +118,11 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form method="post" action="" enctype="multipart/form-data">
+                                        <form method="post" action="{% url 'upload_fee_note' case.fee_note.id %}" enctype="multipart/form-data">
                                             {% csrf_token %}
                                             <div class="mb-3">
                                                 <label for="fee_note" class="form-label">Fee Note File</label>
-                                                <input type="file" class="form-control" name="fee_note" id="fee_note" accept=".pdf">
+                                                <input type="file" class="form-control" name="file" id="fee_note" accept=".pdf">
                                             </div>
                                             <button type="submit" class="btn btn-primary">Upload</button>
                                         </form>
