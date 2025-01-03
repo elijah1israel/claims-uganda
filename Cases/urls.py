@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import cases, new_case, case_info, comment_case, zip_case_files, delete_case, edit_case
+from .views import cases, new_case, case_info, comment_case, zip_case_files, delete_case, edit_case, upload_field_notes
 
 urlpatterns = [
     path('', cases, name='cases'),
@@ -9,4 +9,5 @@ urlpatterns = [
     path('zip_case_files/<int:case_id>', zip_case_files, name='zip_case_files'),
     path('delete_case/<int:case_id>', delete_case, name='delete_case'),
     path('edit_case/<int:case_id>', edit_case, name='edit_case'),
+    path('upload_field_notes/<int:case_id>', upload_field_notes, name='upload_field_notes'),
 ]

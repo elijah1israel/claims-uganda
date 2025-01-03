@@ -86,3 +86,17 @@ def delete_profile_picture(request):
     staff.save()
     messages.success(request, 'Profile picture deleted successfully.')
     return redirect('staff_profile', pk=request.user.staff.pk)
+
+
+@login_required
+def edit_profile(request, pk):
+    staff = Staff.objects.get(pk=pk)
+    if request.method == 'POST':
+        staff.user.first_name = request.POST['first_name']
+        staff.user.last_name = request.POST['last_name']
+        staff.user.email = request.POST['email']
+        staff.date_of_birth = request.POST['date_of_birth']
+        staff.user.save()
+        staff.save()
+        messages.success(request, 'Profile updated successfully.')
+    return redirect('staff_profile', pk=pk)

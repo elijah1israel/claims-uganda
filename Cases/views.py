@@ -162,3 +162,14 @@ def cases_endpoint(request):
             }
             for c in Case.objects.all()]
         return data
+
+@login_required
+def upload_field_notes(request, case_id):
+    case = Case.objects.get(id=case_id)
+    if request.method == 'POST':
+        field_notes = request.FILES['field_notes']
+        case.field_notes = field_notes
+        case.save()
+        messages.success(request, 'Field notes uploaded successfully.')
+        return redirect('case_info', case_id=case_id)
+    return render(request, 'upload_field_notes.html', {'case': case})

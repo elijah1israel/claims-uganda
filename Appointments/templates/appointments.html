@@ -60,45 +60,10 @@
               <td>{{appointment.person_name}}</td>
               <td>
                 <div class="form-button-action">
-                  <button type="button" class="btn btn-link btn-primary btn-lg" data-bs-toggle="modal"
-                    data-bs-target="#editCaseModal" data-case-id="{{case.id}}" title="Edit Staff">
-                    <i class="fa fa-edit"></i>
-                  </button>
-                  <!-- Edit Case Modal -->
-                  <div class="modal fade" id="editCaseModal" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title">Edit Case</h5>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                        <div class="modal-body">
-                          <form method="post" action="{% url 'add_fee_note' %}">
-                            {% csrf_token %}
-                            {{form}}
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                                Close
-                              </button>
-                              <button type="submit" class="btn btn-primary">
-                                Save changes
-                              </button>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                   <button title="delete" type="button" data-bs-toggle="tooltip" class="btn btn-link btn-danger"
                     data-bs-toggle="modal" data-bs-target="#deleteCaseModal" data-case-id="{{case.id}}">
                     <i class="fa fa-times"></i>
                   </button>
-
-    
-
-
                   <!-- Modal -->
                   <div class="modal fade" id="deleteCaseModal" tabindex="-1" role="dialog"
                     aria-labelledby="deleteCaseModalLabel" aria-hidden="true">

@@ -9,7 +9,46 @@
         <div class="d-flex justify-content-between">
           <h4 class="card-title">Staff Profile</h4>
           {% if user.staff == staff %}
-          <a href="" class="btn btn-sm btn-secondary">Edit Profile</a>
+          <a href="#" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#editProfileModal">Edit Profile</a>
+
+          <!-- Edit Profile Modal -->
+          <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form action="{% url 'edit_profile' staff.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                      <label for="first_name">First Name</label>
+                      <input type="text" name="first_name" class="form-control" value="{{staff.user.first_name}}"
+                        required>
+                    </div>
+                    <div class="form-group">
+                      <label for="last_name">Last Name</label>
+                      <input type="text" name="last_name" class="form-control" value="{{staff.user.last_name}}"
+                        required>
+                    </div>
+                    <div class="form-group">
+                      <label for="email">Email</label>
+                      <input type="email" name="email" class="form-control" value="{{staff.user.email}}" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="date_of_birth">Date of Birth</label>
+                      <input type="date" name="date_of_birth" class="form-control"
+                        value="{{staff.date_of_birth|date:'Y-m-d'}}" required>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
           {% endif %}
         </div>
       </div>
