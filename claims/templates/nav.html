@@ -62,9 +62,9 @@ class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bo
         aria-expanded="false"
       >
         <i class="fa fa-bell"></i>
-        {% comment %}
-        <span class="notification">4</span>
-        {% endcomment %}
+        {% if user.staff.notifications.count != 0 %}
+        <span class="notification">{{user.staff.notifications.count}}</span>
+        {% endif %}
       </a>
       <ul
         class="dropdown-menu notif-box animated fadeIn"
@@ -72,31 +72,39 @@ class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bo
       >
         <li>
           <div class="dropdown-title">
-            You have 0 new notification
+            You have {{user.staff.notifications.count}} new notification
           </div>
         </li>
-        {% comment %}
         <li>
           <div class="notif-scroll scrollbar-outer">
             <div class="notif-center">
-              <a href="#">
+              {% for notification in user.staff.notifications.all|dictsortreversed:"created_at" %}
+              <a href="{{notification.action_url}}">
                 <div class="notif-icon notif-primary">
+                  {% if 'Case' in notification.title %}
                   <i class="fa fa-briefcase"></i>
+                  {% elif 'Report' in notification.title %}
+                  <i class="fa fa-file"></i>
+                  {% elif 'Fee Note' in notification.title %}
+                  <i class="fa fa-file-text"></i>
+                  {% else %}
+                  <i class="fa fa-user"></i>
+                  {% endif %}
                 </div>
                 <div class="notif-content">
-                  <span class="block"> New case registered </span>
-                  <span class="time">5 minutes ago</span>
+                  <span class="block"> {{notification.title}} </span>
+                  <span class="time">{{notification.created_at|date:"d/m/Y H:i" }}</span>
                 </div>
               </a>
+              {% endfor %%}
             </div>
           </div>
         </li>
         <li>
-          <a class="see-all" href="javascript:void(0);"
+          <a class="see-all" href="{% url 'notifications' %}"
           >See all notifications<i class="fa fa-angle-right"></i>
         </a>
       </li>
-      {% endcomment %}
       </ul>
     </li>
 

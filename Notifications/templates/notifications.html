@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="notif_body">
+    <div class="notification-wrapper p-5 mt-5">
+        <div class="header-wrapper d-flex justify-content-between">
+            <div class="left d-flex align-items-center justify-content-center">
+                <h3 class="bolder">Notifications</h3>
+                <h6 class="ms-3 rounded-3">3</h6>
+            </div>
+            <div class="right">
+                <span class="read-all">Mark all as read</span>
+            </div>
+        </div>
+        <div class="notifications">
+            <div class="row align-items-center p-3 single-notification unread mt-3">
+                <div class="col-sm-1 col-3">
+                    <img src="{% static 'assets/img/user.png' %}" class="img-fluid" alt="">
+                </div>
+                <div class="col-sm-11 col-9">
+                    <p class="mb-0"><span class="bolder">Mark Webber </span>reacted to your recent post <span
+                            class="bolder">My first tournament today!</span></p>
+                    <span class="time">1m ago</span>
+                </div>
+            </div>
+            <div class="row align-items-center p-3 single-notification unread mt-3">
+                <div class="col-sm-1 col-3">
+                    <img src="assets/images/avatar-angela-gray.webp" class="img-fluid" alt="">
+                </div>
+                <div class="col-sm-11 col-9">
+                    <p class="mb-0"><span class="bolder">Angela Gray </span>followed you</p>
+                    <span class="time">1m ago</span>
+                </div>
+            </div>
+            <div class="row align-items-center p-3 single-notification unread mt-3">
+                <div class="col-sm-1 col-3">
+                    <img src="assets/images/avatar-jacob-thompson.webp" class="img-fluid" alt="">
+                </div>
+                <div class="col-sm-11 col-9">
+                    <p class="mb-0"><span class="bolder">Jacob Thompson </span> has joined your group<span class="bolder">
+                            Chess Club</span></p>
+                    <span class="time">1m ago</span>
+                </div>
+            </div>
+            <div class="row align-items-center p-3 single-notification read mt-3">
+                <div class="col-md-1 col-3">
+                    <img src="assets/images/avatar-kimberly-smith.webp" class="img-fluid" alt="">
+                </div>
+                <div class="col-md-10 col-6">
+                    <p class="mb-0"><span class="bolder">Kimberly Smith </span> commented on your picture</p>
+                    <span class="time">1m ago</span>
+                </div>
+                <div class="col-md-1 col-3">
+                    <img src="assets/images/image-chess.webp" class="img-fluid noti-img" alt="">
+                </div>
+    
+            </div>
+            <div class="row align-items-center p-3 single-notification read mt-3">
+                <div class="col-sm-1 col-3">
+                    <img src="assets/images/avatar-nathan-peterson.webp" class="img-fluid" alt="">
+                </div>
+                <div class="col-sm-11 col-9">
+                    <p class="mb-0"><span class="bolder">NathanPeterson </span>reacted to your recent post <span
+                            class="bolder"> 5 end-game strategies to increase your win rate</span></p>
+                    <span class="time">2 weeks ago</span>
+                </div>
+            </div>
+            <div class="row align-items-center p-3 single-notification read mt-3">
+                <div class="col-sm-1 col-3">
+                    <img src="assets/images/avatar-anna-kim.webp" class="img-fluid" alt="">
+                </div>
+                <div class="col-sm-11 col-9">
+                    <p class="mb-0"><span class="bolder">Anna Kim </span>left the group<span class="bolder"> Chess
+                            club</span></p>
+                    <span class="time">2 weeks ago</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

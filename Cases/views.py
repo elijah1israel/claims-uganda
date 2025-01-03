@@ -14,6 +14,7 @@ from django.core import mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from Staff.models import Staff
+from django.urls import reverse
 
 @login_required
 def cases(request):
@@ -61,14 +62,8 @@ def new_case(request):
             case.save()
             assessor = form.cleaned_data['assessor']
             assessor.cases.add(form.instance)
-            subject = 'New Case Assigned!'
-            operating_system = request.META.get('HTTP_USER_AGENT')
-            browser_name = request.META.get('HTTP_USER_AGENT')
-            html_message = render_to_string('new_case_email.html', {'operating_system': operating_system, 'browser_name': browser_name, 'name': assessor.staff.user.first_name, 'sender': request.user.staff.user.first_name, 'case': case})
-            plain_message = strip_tags(html_message)
-            from_email = 'Claims System <info@claimsug.com>'
-            to = assessor.staff.user.email
-            mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
+            action_url = reverse('case_info', args=[case.id])
+            assessor.staff.notifications.create(staff=assessor.staff, title='New Case', content=f'You have been assigned a new case: {case.reference_number}', action_url=action_url, button_text='View Case')
             messages.success(request, 'Case created successfully.')
             return redirect('cases')
     else:

@@ -6,8 +6,11 @@
   <div class="col-md-12">
     <div class="card">
       <div class="card-header">
-        <div class="d-flex align-items-center">
+        <div class="d-flex justify-content-between">
           <h4 class="card-title">Staff Profile</h4>
+          {% if user.staff == staff %}
+          <a href="" class="btn btn-sm btn-secondary">Edit Profile</a>
+          {% endif %}
         </div>
       </div>
       <div class="card-body">
@@ -47,10 +50,10 @@
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
-                  <div class="modal-body text-left">
+                  <div style="align-items: flex-start;" class="modal-body text-left">
                     <form action="{% url 'change_password' %}" method="post">
                       {% csrf_token %}
-                      <div style="align-items: left;" class="form-group">
+                      <div style="align-content: left;" class="form-group">
                         <label for="current_password">Old Password</label>
                         <input type="password" name="current_password" class="form-control" id="old_password" required>
                       </div>

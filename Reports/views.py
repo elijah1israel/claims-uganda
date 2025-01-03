@@ -103,14 +103,7 @@ def share_report(request, report_id):
         staff = Staff.objects.get(id=staff_id)
         report = Report.objects.get(id=report_id)
         link_url = request.build_absolute_uri(report.file.url)
-        subject = f'Report for case {report.case.reference_number} Shared.'
-        operating_system = request.META.get('HTTP_USER_AGENT')
-        browser_name = request.META.get('HTTP_USER_AGENT')
-        html_message = render_to_string('report_share_email.html', {'operating_system': operating_system, 'browser_name': browser_name, 'action_url': link_url, 'name': staff.user.first_name, 'sender': request.user.staff.user.first_name, 'message': message, 'report': report})
-        plain_message = strip_tags(html_message)
-        from_email = 'Claims System <info@claimsug.com>'
-        to = staff.user.email
-        mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
+        staff.notifications.create(staff=staff, title='Report Shared', content=message, button_text='Download Report', action_url=link_url)
         messages.success(request, 'Report shared successfully.')
         return redirect('reports')
 

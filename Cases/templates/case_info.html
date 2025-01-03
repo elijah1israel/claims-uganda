@@ -9,8 +9,8 @@
                 <h3 class="card-title">Case Information</h3>
                 <div class="card-tools">
                     {% if user.staff.department == 'Administration' or user.staff.department == 'Assessors' %}
-                    <a href="{% url 'zip_case_files' case.id %}" class="btn btn-primary">
-                        <i class="fa fa-file-archive"></i> Archive
+                    <a href="" class="btn btn-success">
+                        Close Case
                     </a>
                     {% endif %}
                 </div>
@@ -36,7 +36,16 @@
                     <dt class="col-sm-4">Assessor</dt>
                     <dd class="col-sm-8">{{case.assessor}}</dd>
                     <dt class="col-sm-4">Field Notes</dt>
-                    <dd class="col-sm-8">{{case.assessor}}</dd>
+                    <dd class="col-sm-8">
+                        {% if case.field_notes %}
+                        <a href="{{case.field_notes.url}}" download>Download</a>
+                        {% else %}
+                        Not uploaded
+                        {% endif %}
+                        <br>
+                        <button type="button" class="btn btn-secondary btn-sm mt-3" data-bs-toggle="modal"
+                            data-bs-target=""><i class="fa fa-upload"></i> Upload Field Notes</button>
+                    </dd>
                     
                 </dl>
             </div>
